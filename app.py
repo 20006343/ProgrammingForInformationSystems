@@ -6,6 +6,18 @@ from pony.orm import *
 # Create the database instance for attaching to ORM
 db = Database()
 
+# Creating the Suppliers table
+class Supplier(db.Entity):
+	supplierid = PrimaryKey(int, auto=True)
+	authenticationid=Required('Authentication')
+	supplierName=Required(str)
+	email=Required(str)
+	phonenumber=Required(str)
+	location=Required(str)
+	address=Required(str)
+	supplieridstock=Optional('Stock')
+
+
 # Creating the Authentication table
 class Authentication(db.Entity):
 	authenticationid = PrimaryKey(int, auto=True)
