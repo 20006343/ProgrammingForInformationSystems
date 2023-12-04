@@ -32,6 +32,21 @@ class Employee(db.Entity):
 	category=Required(str)
 	employeeidtransaction=Set('Transaction')
 
+# Creating the Customer table
+class Customer(db.Entity):
+	customerid = PrimaryKey(int, auto=True)
+	authenticationid=Required('Authentication')
+	customername=Required(str)
+	email=Required(str)
+	phonenumber=Required(str)
+	address=Required(str)
+	location=Required(str)
+	dateofbirth=Required(datetime,6)
+	paymentpreference=Required(str)
+	customeridtransaction=Set('Transaction')
+	customeridreceipt=Set('Receipt')
+
+
 # Creating the Authentication table
 class Authentication(db.Entity):
 	authenticationid = PrimaryKey(int, auto=True)
