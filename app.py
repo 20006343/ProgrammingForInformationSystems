@@ -76,6 +76,15 @@ class Transaction(db.Entity):
 	quantity=Required(float)
 	status=Required(str)
 
+# Creating the Receipt table
+class Receipt(db.Entity):
+	customerid=Required('Customer')
+	receiptdate=Required(date)
+	receipttime=Required(time)
+	total=Required(float)
+	amountpaid=Required(float)
+	balance=Required(float)
+	paymentmethod=Required(str)
 
 
 app = Flask(__name__)
