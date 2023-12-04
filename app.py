@@ -85,7 +85,16 @@ class Receipt(db.Entity):
 	amountpaid=Required(float)
 	balance=Required(float)
 	paymentmethod=Required(str)
-
+	
+# Creating the Product table
+class Product(db.Entity):
+	productid = PrimaryKey(int, auto=True)
+	productName=Required(str)
+	description=Required(str)
+	category=Required(str)
+	retailunitprice=Required(float)
+	productidstock=Set('Stock')
+	productidtransaction=Set('Transaction')
 
 app = Flask(__name__)
 
