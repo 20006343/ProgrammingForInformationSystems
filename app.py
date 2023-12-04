@@ -65,7 +65,18 @@ class Stock(db.Entity):
 	supplyunitprice=Required(float)
 	dateofsupply=Required(datetime)
 	invoicestatus=Required(str)
-	
+
+# Creating the Transaction table
+class Transaction(db.Entity):
+	customerid=Required('Customer')
+	employeeid=Required('Employee')
+	productid=Required('Product')
+	transactiondate=Required(date)
+	transactiontime=Required(time)
+	quantity=Required(float)
+	status=Required(str)
+
+
 
 app = Flask(__name__)
 
