@@ -57,6 +57,15 @@ class Authentication(db.Entity):
 	authenticationidemployee=Optional('Employee')
 	authenticationidcustomer=Optional('Customer')
 
+# Creating the Stock table
+class Stock(db.Entity):
+	productid=Required('Product')
+	supplierid=Required('Supplier')
+	quantitysupplied=Required(float)
+	supplyunitprice=Required(float)
+	dateofsupply=Required(datetime)
+	invoicestatus=Required(str)
+	
 
 app = Flask(__name__)
 
