@@ -2,6 +2,8 @@
 from flask import Flask
 # Import the pony orm classes
 from pony.orm import *
+#import the builtin datetime object
+from datetime import datetime
 
 # Create the database instance for attaching to ORM
 db = Database()
@@ -17,6 +19,18 @@ class Supplier(db.Entity):
 	address=Required(str)
 	supplieridstock=Optional('Stock')
 
+# Creating the Employee table
+class Employee(db.Entity):
+	employeeid = PrimaryKey(int, auto=True)
+	authenticationid=Required('Authentication')
+	employeename=Required(str)
+	email=Required(str)
+	phonenumber=Required(str)
+	address=Required(str)
+	location=Required(str)
+	dateofbirth=Required(datetime,6)
+	category=Required(str)
+	employeeidtransaction=Set('Transaction')
 
 # Creating the Authentication table
 class Authentication(db.Entity):
