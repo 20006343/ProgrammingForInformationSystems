@@ -1,29 +1,124 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<title>Login</title>
-
-	<!-- note the special href for files in the Flask "static" folder -->
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-
+  <title>Login Form</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=0.0.1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
+  <div class="container">
+    <div class="row px-3">
+        <div class="col-lg-10 col-xl-9 card flex-row mx-auto px-0">
+          <div class="img-left d-none d-md-flex"></div>
 
-<div id="container">
-  <!-- Jinja directives: page contents will go between them -->
-  {% block content %}
-  		<label>Username</label>
-  		<input type="text">
-  		<label>Password</label>
-  		<input type="text">
-  		<input type="submit">
+          <div class="card-body">
+            <h4 class="title text-center mt-4">
+              Welcome to The RetailStore Login Center
+            </h4>
 
-  {% endblock %}
+            <form class="form-box px-3">
+              <div id="log"></div>
+              <div class="form-input">
+                <span><i class="fa fa-envelope-o"></i></span>
+                <input type="text" name="" placeholder="Username" tabindex="10" id="username" required >
+              </div>
 
-</div>
+              <div class="form-input">
+                <span><i class="fa fa-key"></i></span>
+                <input type="password" name="" placeholder="Password" id="password" required >
+              </div>
 
+              <div class="mb-3">
+                <button type="button" class="btn btn-block btn-primary text-uppercase" onclick="login()">
+                  Login
+                </button>
+              </div>
+
+            <hr class="my-4">
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<script>
+  function callapi(method,url,jsondata,origin){
+    var result=""
+
+    const xhttpr = new XMLHttpRequest();
+    xhttpr.open(method,url, true);
+
+    if(method=="GET"){
+      xhttpr.send();
+    }else{
+      xhttpr.setRequestHeader("Content-Type", "application/json");
+
+      xhttpr.send(jsondata);
+    }
+
+    xhttpr.onreadystatechange = () => {
+      if(xhttpr.status===200 && xhttpr.readyState === XMLHttpRequest.DONE){
+        if(origin=='login'){
+          result=xhttpr.response
+          if(result=='False'){
+            var log=document.getElementById('log');
+            log.innerHTML="Incorrect Username/password"
+            log.style.color="red"
+          }else {
+            var user=JSON.parse(result)
+
+            var role=user.role
+            var authid=user.authid
+
+            if(role=='owner'){
+              window.location.href='/owner'
+            }else if(role=='manager'){
+              window.location.href='/manager'
+            }else if(role=='supplier'){
+              window.location.href='/supplier'
+            }else if(role=='employee'){
+              window.location.href='/employee'
+            }else if(role=='customer'){
+              window.location.href='/customer'
+            }
+
+
+          }
+
+
+          
+        }
+
+
+      }
+    }
+
+    return result
+  }
+
+  function login(){
+    var url=""
+    //capture the username and password
+    var username=document.getElementById('username').value;
+    var password=document.getElementById('password').value;
+
+
+    var jsondata={
+      'username': username,
+      'password': password
+    }
+
+    jsondata=JSON.stringify(jsondata)
+
+    //call the login endpoints
+    callapi('POST','http://127.0.0.1:105/api/authentication',jsondata,'login')
+
+  }
+</script>
 </body>
 </html>
