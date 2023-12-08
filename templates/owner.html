@@ -152,6 +152,144 @@
                 </div>
               </div>
 
+               <div class="col-md-12" id="employeeinfo">
+                <div class="row">
+                  <div class="col-md-4 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Employee Information</h4>
+                        <hr>
+                        <p class="card-description">Add Employee</p>
+                        <form class="forms-sample">
+                          <div class="form-group row">
+                            <label for="exampleInputUsername2" class="col-sm-6 col-form-label">Username</label>
+                            <div class="col-sm-6">
+
+                             <select id="authenticationid" class="form-control">
+                                <option value="" selected="selected">Select a Username</option>
+                               {% for user in users %}
+                                    <option value="{{user.authenticationid}}">{{user.username}}</option>
+                                {% endfor %} 
+                             </select>
+                            </div>
+                          </div>
+
+                         <div class="form-group row">
+                            <label for="exampleInputEmail2" class="col-sm-6 col-form-label">Employee Name</label>
+                            <div class="col-sm-6">
+                              <input type="text" class="form-control" id="employeename" placeholder="Employee Name" />
+                            </div>
+                          </div>
+
+                         <div class="form-group row">
+                            <label for="exampleInputEmail2" class="col-sm-6 col-form-label">Email</label>
+                            <div class="col-sm-6">
+                              <input type="email" class="form-control" id="email" placeholder="Email" />
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="exampleInputEmail2" class="col-sm-6 col-form-label">Phone Number</label>
+                            <div class="col-sm-6">
+                              <input type="text" class="form-control" id="phonenumber" placeholder="Phone Number" />
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="exampleInputEmail2" class="col-sm-6 col-form-label">Address</label>
+                            <div class="col-sm-6">
+                              <input type="text" class="form-control" id="address" placeholder="Address" />
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="exampleInputEmail2" class="col-sm-6 col-form-label">Location</label>
+                            <div class="col-sm-6">
+                              <input type="text" class="form-control" id="location" placeholder="Location" />
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="exampleInputEmail2" class="col-sm-6 col-form-label">Date of Birth</label>
+                            <div class="col-sm-6">
+                              <input type="date" class="form-control" id="dob" placeholder="Date of Birth" />
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="exampleInputEmail2" class="col-sm-6 col-form-label">Category</label>
+                            <div class="col-sm-6">
+                              <select id="category" class="form-control">
+                                <option value="manager">Manager</option>
+                                <option value="staff">Staff</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <button type="button" class="btn btn-primary mr-2" onclick="addEmployee()"> Add</button>
+                          
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+
+                   <div class="col-md-8 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+
+                        <h4 class="card-title">Employee Information</h4>
+                        <hr>
+                        <p class="card-description">All Employees : </p>
+
+                        <table class="table">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">Username</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">Email</th>
+                              <th scope="col">Phone Number</th>
+                              
+                              <th scope="col">Address</th>
+                              <th scope="col">Location</th>
+                              
+                            </tr>
+                          </thead>
+
+                          <tbody>
+
+                            {% for employee in employees %}
+                                <tr>
+                                {% for user in allusers %}
+                                  {% if employee.authenticationid.authenticationid | int ==user.authenticationid | int%}
+                                      <td>{{user.username}}</td>
+                                  {% else %}
+                                      {{ pass }}
+                                  {% endif %}
+                                {% endfor %} 
+                                
+                                  <td>{{employee.employeename}}</td>
+                                  <td>{{employee.email}}</td>
+                                  <td>{{employee.phonenumber}}</td>
+                                  <td>{{employee.address}}</td>
+                                  <td>{{employee.location}}</td>
+
+                                  <td><input type="button" class="btn btn-primary" value="Delete"></td>
+                                </tr>
+                            {% endfor %} 
+                            
+                           
+                            
+                          </tbody>
+                        </table>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
              
               
             </div>
@@ -241,6 +379,35 @@
             document.getElementById('password').value=""
             document.getElementById('confirm').value=""
           }
+        }
+
+        function addEmployee(){
+          //capture the username and password
+          var authenticationid=document.getElementById('authenticationid').value;
+          var employeename=document.getElementById('employeename').value;
+          var email=document.getElementById('email').value;
+          var phonenumber=document.getElementById('phonenumber').value;
+          var address=document.getElementById('address').value;
+          var location=document.getElementById('location').value;
+          var dob=document.getElementById('dob').value;
+          var category=document.getElementById('category').value;
+
+
+          var jsondata={
+            'authenticationid': parseInt(authenticationid),
+            'employeename': employeename,
+            'email': email,
+            'phonenumber': phonenumber,
+            'address': address,
+            'location': location,
+            'dob': dob,
+            'category': category
+          }
+
+          jsondata=JSON.stringify(jsondata)
+
+          //call the login endpoints
+          callapi('POST','http://127.0.0.1:105/api/addemployee',jsondata,'owner')
         }
 
 
