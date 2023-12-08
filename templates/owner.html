@@ -54,6 +54,12 @@
                 
               </li>
 
+               <li class="nav-item">
+                <a class="nav-link" onclick="scrolltodiv('productinfo')">
+                  <span class="profile-name">Products</span>
+                </a>
+              </li>
+
 
         
               <li class="nav-item nav-profile dropdown border-0">
@@ -404,6 +410,96 @@
               </div>
 
 
+              <div class="col-md-12" id="productinfo">
+                <div class="row">
+                  <div class="col-md-4 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Product Information</h4>
+                        <hr>
+                        <p class="card-description">Add Product</p>
+                        <form class="forms-sample">
+
+
+                         <div class="form-group row">
+                            <label for="exampleInputEmail2" class="col-sm-6 col-form-label">Product Name</label>
+                            <div class="col-sm-6">
+                              <input type="text" class="form-control" id="productname" placeholder="Product Name" />
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="exampleInputEmail2" class="col-sm-6 col-form-label">Description</label>
+                            <div class="col-sm-6">
+                              <input type="text" class="form-control" id="description" placeholder="Descriptions" />
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="exampleInputEmail2" class="col-sm-6 col-form-label">Category</label>
+                            <div class="col-sm-6">
+                              <input type="text" class="form-control" id="category" placeholder="Category" />
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="exampleInputEmail2" class="col-sm-6 col-form-label">Retail Unit Price</label>
+                            <div class="col-sm-6">
+                              <input type="text" class="form-control" id="retailunitprice" placeholder="Retail Unit Price" />
+                            </div>
+                          </div>
+
+                          <button type="button" class="btn btn-primary mr-2" onclick="addProduct()"> Add</button>
+                          
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+                   <div class="col-md-8 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+
+                        <h4 class="card-title">Product Information</h4>
+                        <hr>
+                        <p class="card-description">All Products : </p>
+
+                        <table class="table">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">Name</th>
+                              <th scope="col">Description</th>
+                              <th scope="col">Category</th>
+                              <th scope="col">Retail Price</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+
+                            {% for product in products %}
+                                <tr>
+                                  <td>{{product.productName}}</td>
+                                  <td>{{product.description}}</td>
+                                  <td>{{product.category}}</td>
+                                  <td>{{product.retailunitprice}}</td>
+                        
+                                  <td><input type="button" class="btn btn-primary" value="Delete"></td>
+                                </tr>
+                            {% endfor %} 
+                            
+                           
+                            
+                          </tbody>
+                        </table>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
              
               
             </div>
@@ -550,6 +646,28 @@
           //call the login endpoints
           callapi('POST','http://127.0.0.1:105/api/addsupplier',jsondata,'owner')
         }
+
+        function addProduct(){
+          //capture the username and password
+          var productname=document.getElementById('productname').value;
+          var description=document.getElementById('description').value;
+          var category=document.getElementById('category').value;
+          var retailunitprice=document.getElementById('retailunitprice').value;
+
+
+          var jsondata={
+            'productname': productname,
+            'description': description,
+            'category': category,
+            'retailunitprice': retailunitprice
+          }
+
+          jsondata=JSON.stringify(jsondata)
+
+          //call the login endpoints
+          callapi('POST','http://127.0.0.1:105/api/addproduct',jsondata,'owner')
+        }
+
 
 
 
