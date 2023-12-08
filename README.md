@@ -14,6 +14,9 @@
     -   a normal (/) route for serving the html files
     -   an (/api) route which is an API for interacting with the backend 
 - Navigate to the address on your browser
+- A test user for login is created by default with the following details
+   -  username: test
+   -  password: test123
 
 # Interfaces after Running
 - Login Page
