@@ -57,7 +57,7 @@ def add_user():
 	else:
 		session['successuser']="User Added Succesfully"
 		if 'erroruser' in session.keys():
-			session.pop('errouser')
+			session.pop('erroruser')
 		auth=Authentication.Authentication(models.Authentication,connectiondict,authinfo.get('username'),authinfo.get('password'),authinfo.get('role'))
 		auth.AddUser()
 	return "User Added", 200
@@ -72,13 +72,32 @@ def add_product():
 	return 'Product Added', 200
 
 
-@app.route('/api/employee', methods=['POST'])
+@app.route('/api/addemployee', methods=['POST'])
 def add_employee():
 	connectiondict={'provider':provider,'host': host,'user':user, 'passwd':password,'db':database,'port':port}
-	productinfo= json.loads(request.data)
-	product=Product.Product(productinfo.get('productname'),productinfo.get('description'),productinfo.get('category'),productinfo.get('retailunitprice'),models.Product,connectiondict)
-	product.AddProduct()
+	employeeinfo= json.loads(request.data)
+	print(str(employeeinfo))
+	employee=Employee.Employee(models.Employee,connectiondict,employeeinfo.get('authenticationid'),employeeinfo.get('employeename'),employeeinfo.get('email'),employeeinfo.get('phonenumber'),employeeinfo.get('address'),employeeinfo.get('location'),employeeinfo.get('dob'),employeeinfo.get('category'))
+	employee.AddEmployee()
 	return 'Employee Added', 200
+
+@app.route('/api/addsupplier', methods=['POST'])
+def add_supplier():
+	connectiondict={'provider':provider,'host': host,'user':user, 'passwd':password,'db':database,'port':port}
+	supplierinfo= json.loads(request.data)
+	supplier=Supplier.Supplier(supplierinfo.get('supplierauthenticationid'),supplierinfo.get('suppliername'),supplierinfo.get('supplieremail'),supplierinfo.get('supplierphonenumber'),supplierinfo.get('supplieraddress'),supplierinfo.get('supplierlocation'),models.Supplier,connectiondict)
+	supplier.AddSupplier()
+	return 'Supplier Added', 200
+
+
+@app.route('/api/addstock', methods=['POST'])
+def add_stock():
+	connectiondict={'provider':provider,'host': host,'user':user, 'passwd':password,'db':database,'port':port}
+	stockinfo= json.loads(request.data)
+	stock=Stock.Stock(stockinfo.get('stockproductid'),stockinfo.get('stocksupplierid'),stockinfo.get('stockquantity'),stockinfo.get('stockquantity'),stockinfo.get('stocksupplyunitprice'),stockinfo.get('stocksupplydate'),"Uninvoiced",models.Stock,connectiondict)
+	stock.AddStock()
+	return 'Stock Added', 200
+
 
 
 ###################################################
@@ -88,11 +107,45 @@ def owner_view():
 	suppliers=[]
 
 	with db_session:
-		products=list(models.Product.select())
-		suppliers=list(models.Supplier.select())
-		users=list(models.Authentication.select())
+		products=list(reversed(list(models.Product.select())))
+		employees=list(reversed(list(models.Employee.select())))
+		customers=list(reversed(list(models.Customer.select())))
+		suppliers=list(reversed(list(models.Supplier.select())))
+		stocks=[]
 
-	return render_template('owner.html',products=products,suppliers=suppliers,session=session,users=users)
+		for stockitem in list(reversed(list(models.Stock.select()))):
+			stockdict={}
+			stockdict['productName']=models.Product.get(productid=stockitem.productid.productid).productName
+			stockdict['supplierName']=models.Supplier.get(supplierid=stockitem.supplierid.supplierid).supplierName
+			stockdict['quantitysupplied']=stockitem.quantitysupplied
+			stockdict['quantityremaining']=stockitem.quantityremaining
+			stockdict['supplyunitprice']=stockitem.supplyunitprice
+			stockdict['dateofsupply']=stockitem.dateofsupply.strftime("%b %d, %Y")
+			stocks.append(stockdict)
+
+		#ensuring that the authenticationids are not used more than once
+		usedauthenticationsids=[]
+
+		for customer in customers:
+			usedauthenticationsids.append(int(customer.authenticationid.authenticationid))
+
+		for employee in employees:
+			usedauthenticationsids.append(int(employee.authenticationid.authenticationid))
+
+		for supplier in suppliers:
+			usedauthenticationsids.append(int(supplier.authenticationid.authenticationid))
+
+		allusers=list(reversed(list(models.Authentication.select())))
+		users=[]
+
+		for user in allusers:
+			if user.authenticationid in usedauthenticationsids:
+				pass
+			else:
+				users.append(user)
+		#end ensuring that the authenticationids are not used more than once
+
+	return render_template('owner.html',products=products,suppliers=suppliers,stocks=stocks,session=session,users=users,employees=employees,allusers=allusers)
 
 ###################################################
 
