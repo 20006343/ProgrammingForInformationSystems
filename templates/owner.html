@@ -60,6 +60,14 @@
                 </a>
               </li>
 
+               <li class="nav-item">
+                <a class="nav-link" onclick="scrolltodiv('stockinfo')">
+                  <span class="profile-name">Stocks</span>
+                </a>
+                
+              </li>
+
+
 
         
               <li class="nav-item nav-profile dropdown border-0">
@@ -499,6 +507,113 @@
               </div>
 
 
+              <div class="col-md-12" id="stockinfo">
+                <div class="row">
+                  <div class="col-md-4 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Stock Information</h4>
+                        <hr>
+                        <p class="card-description">Add To Stock</p>
+                        <form class="forms-sample">
+
+
+                         <div class="form-group row">
+                            <label for="exampleInputUsername2" class="col-sm-6 col-form-label">Product</label>
+                            <div class="col-sm-6">
+                             <select id="stockproductid" class="form-control">
+                              <option value="" selected="selected">Select a Product</option>
+                               {% for item in products %}
+                                    <option value="{{item.productid}}">{{item.productName}}</option>
+                                {% endfor %} 
+                             </select>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="exampleInputUsername2" class="col-sm-6 col-form-label">Supplier</label>
+                            <div class="col-sm-6">
+                             <select id="stocksupplierid" class="form-control">
+                              <option value="" selected="selected">Select a Supplier</option>
+                               {% for supplier in suppliers %}
+                                    <option value="{{supplier.supplierid}}">{{supplier.supplierName}}</option>
+                                {% endfor %} 
+                             </select>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="exampleInputEmail2" class="col-sm-6 col-form-label">Quantity Supplied</label>
+                            <div class="col-sm-6">
+                              <input type="text" class="form-control" id="stockquantity" placeholder="QUantity Supplied" />
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="exampleInputEmail2" class="col-sm-6 col-form-label">Unit Price</label>
+                            <div class="col-sm-6">
+                              <input type="text" class="form-control" id="stocksupplyunitprice" placeholder="Supply Unit Price" />
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="exampleInputEmail2" class="col-sm-6 col-form-label">Supply Date</label>
+                            <div class="col-sm-6">
+                              <input type="date" class="form-control" id="stocksupplydate" placeholder="Supply Date" />
+                            </div>
+                          </div>
+
+                          <button type="button" class="btn btn-primary mr-2" onclick="addStock()"> Add</button>
+                          
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+                     <div class="col-md-8 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Stock Information</h4>
+                        <hr>
+                        <p class="card-description">Products In Stock : </p>
+                        <table class="table">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col">Product</th>
+                              <th scope="col">Supplier</th>
+                              <th scope="col">Quantity Supplied</th>
+                              <th scope="col">Quantity In Stock</th>
+                              <th scope="col">Supply Unit Price</th>
+                              <th scope="col">Supply Date</th>
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                           
+                            {% for stock in stocks %}
+                                <tr>
+                                  <td>{{stock.productName}}</td>
+                                  <td>{{stock.supplierName}}</td>
+                                  <td>{{stock.quantitysupplied}}</td>
+                                  <td>{{stock.quantityremaining}}</td>
+                                  <td>{{stock.supplyunitprice}}</td>
+                                  <td>{{stock.dateofsupply}}</td>
+                                  
+                                  <td><input type="button" class="btn btn-primary" value="Delete"></td>
+                                </tr>
+                            {% endfor %} 
+                           
+                           
+                            
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
 
              
               
@@ -666,6 +781,29 @@
 
           //call the login endpoints
           callapi('POST','http://127.0.0.1:105/api/addproduct',jsondata,'owner')
+        }
+
+        
+        function addStock(){
+          //capture the username and password
+          var stockproductid=document.getElementById('stockproductid').value;
+          var stocksupplierid=document.getElementById('stocksupplierid').value;
+          var stockquantity=document.getElementById('stockquantity').value;
+          var stocksupplyunitprice=document.getElementById('stocksupplyunitprice').value;
+          var stocksupplydate=document.getElementById('stocksupplydate').value;
+          
+          var jsondata={
+            'stockproductid': parseInt(stockproductid),
+            'stocksupplierid': parseInt(stocksupplierid),
+            'stockquantity': stockquantity,
+            'stocksupplyunitprice': stocksupplyunitprice,
+            'stocksupplydate': stocksupplydate
+          }
+
+          jsondata=JSON.stringify(jsondata)
+
+          //call the login endpoints
+          callapi('POST','http://127.0.0.1:105/api/addstock',jsondata,'owner')
         }
 
 
