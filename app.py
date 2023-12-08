@@ -21,6 +21,12 @@ models.init()
 connectiondict={'provider':provider,'host': host,'user':user, 'passwd':password,'db':database,'port':port}
 # end database table creation
 
+#if the test user is already created, delete the user and add it again
+defaultuser=Authentication.Authentication(models.Authentication,connectiondict,'test','test123','owner')
+with db_session:
+	defaultuser.RemoveUser(models.Authentication.get(username='test').authenticationid)
+defaultuser.AddUser()
+
 # start the definitions of the flask app
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'memcached'
