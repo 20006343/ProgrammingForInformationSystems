@@ -14,3 +14,27 @@
     -   a normal (/) route for serving the html files
     -   an (/api) route which is an API for interacting with the backend 
 - Navigate to the address on your browser
+
+# Interfaces after Running
+- Login Page
+  ![login page](https://github.com/20006343/ProgrammingForInformationSystems/blob/main/sampleruns/login.png?raw=true)
+
+- Owner Dashboard
+  ![owner page](https://github.com/20006343/ProgrammingForInformationSystems/blob/main/sampleruns/dashboard.png?raw=true)
+
+
+- Add / View User Information
+    ![user page](https://github.com/20006343/ProgrammingForInformationSystems/blob/main/sampleruns/users.png?raw=true)
+
+- Add / View Employee Information
+    ![employee page](https://github.com/20006343/ProgrammingForInformationSystems/blob/main/sampleruns/employee.png?raw=true)
+
+- Add / View Supplier Information
+    ![supplier page](https://github.com/20006343/ProgrammingForInformationSystems/blob/main/sampleruns/supplier.png?raw=true)
+  
+- Add / View Product Information
+  ![product page](https://github.com/20006343/ProgrammingForInformationSystems/blob/main/sampleruns/product.png?raw=true)
+
+- Add / View Stock Information
+    ![stock page](https://github.com/20006343/ProgrammingForInformationSystems/blob/main/sampleruns/stock.png?raw=true)
+  
