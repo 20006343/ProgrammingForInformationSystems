@@ -9,7 +9,7 @@
 - Install the Postman App for Out of the Box API Testing
 - Clone the repository or Download as a ZIP
 - Edit the config.py file and enter the host, user, password, database and port details from your MySQL instance
-- Depending on your python version install the requirements using the command pip install -r requirements.txt
+- Depending on your python version install the requirements using the command pip or pip3 install -r requirements.txt
 - Run the app.py file by using the command python app.py
 - This will start the application on the address http://127.0.0.1:105 with two routes described below
     -   a normal (/) route for serving the html files
