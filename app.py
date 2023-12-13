@@ -24,7 +24,8 @@ connectiondict={'provider':provider,'host': host,'user':user, 'passwd':password,
 #if the test user is already created, delete the user and add it again
 defaultuser=Authentication.Authentication(models.Authentication,connectiondict,'test','test123','owner')
 with db_session:
-	defaultuser.RemoveUser(models.Authentication.get(username='test').authenticationid)
+	if models.Authentication.get(username='test'):
+		defaultuser.RemoveUser(models.Authentication.get(username='test').authenticationid)
 defaultuser.AddUser()
 
 # start the definitions of the flask app
